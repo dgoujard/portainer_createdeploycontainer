@@ -1,0 +1,14 @@
+{
+  "name": "portainer_action",
+  "version": "1.0.0",
+  "description": "Portainer github action to create remote container",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "got": "^10.3.0",
+    "uuid": "^3.4.0"
+  }
+}
