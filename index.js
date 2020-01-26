@@ -19,14 +19,11 @@ const core = require('@actions/core');
             "Username": LOGIN,
             "Password": PASSWORD
           }}).json();
-          console.log("1");
 
         if( authRequest.jwt == undefined)
           throw new Error("Missing auth token")
-          console.log("2");
 
         const AUTH_TOKEN = authRequest.jwt
-        console.log("3");
 
         const jsonClient = instance.extend({
             responseType: 'json',
@@ -34,12 +31,19 @@ const core = require('@actions/core');
                 'authorization': 'Bearer '+AUTH_TOKEN
             }
         });
-        console.log("4");
-console.log(AUTH_TOKEN)
+        //pull image
+        
+        const createImageRequest = await jsonClient.post("endpoints/1/docker/images/create?fromImage="+encodeURI(CONTAINER_IMAGE), {
+            json: {"fromImage":CONTAINER_IMAGE},
+            headers: {
+                "x-registry-auth": "eyJzZXJ2ZXJhZGRyZXNzIjoicmVnaXN0cnkuYXBwLmRnb3VqYXJkLmZyIn0="
+            }
+        }).json();
+        console.log(createImageRequest);
 
         //Create container
         const CONTAINER_NAME = uuidv1()
-        console.log({
+        const containerRequestParams = {
             "Image":CONTAINER_IMAGE,
             "HostConfig":{
                 "RestartPolicy":{"Name":"no"},
@@ -48,22 +52,14 @@ console.log(AUTH_TOKEN)
                 "NetworkMode":"bridge",
                 "Privileged":false,
             },
-            "name":CONTAINER_NAME
-            });
-            console.log("endpoints/1/docker/containers/create?name="+CONTAINER_NAME)
-        const createContainerRequest = await jsonClient.post("endpoints/1/docker/containers/create?name="+CONTAINER_NAME, {json: {
-            "Image":CONTAINER_IMAGE,
-            "HostConfig":{
-                "RestartPolicy":{"Name":"no"},
-                "Binds":[CONTAINER_HOST_MOUNT_VOLUME+":/volume_out"],
-                "AutoRemove":false,
-                "NetworkMode":"bridge",
-                "Privileged":false,
-            },
-            "name":CONTAINER_NAME
-            }}).json();
-            console.log("5");
-console.log(createContainerRequest)
+            "name":CONTAINER_NAME,
+            "Volumes": {}
+        };
+        console.log(containerRequestParams)
+        console.log("endpoints/1/docker/containers/create?name="+CONTAINER_NAME)
+        const createContainerRequest = await jsonClient.post("endpoints/1/docker/containers/create?name="+CONTAINER_NAME, {json: containerRequestParams}).json();
+        console.log("5");
+        console.log(createContainerRequest)
         if( createContainerRequest.Id == undefined)  
             throw new Error("Missing container ID in response")
             console.log("6");
@@ -71,6 +67,7 @@ console.log(createContainerRequest)
         CONTAINER_ID = createContainerRequest.Id
 
         const startContainerRequest = await jsonClient.post("endpoints/1/docker/containers/"+CONTAINER_ID+"/start", {json: {}}).json();
+        console.log(startContainerRequest);
         console.log("Done")
     } catch (error) {
 		console.log(error)
