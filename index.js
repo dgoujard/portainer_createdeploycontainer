@@ -9,7 +9,6 @@ const core = require('@actions/core');
     const URL = process.env.URL || core.getInput('url');
     const CONTAINER_IMAGE = process.env.CONTAINER_IMAGE || core.getInput('container_image');
     const CONTAINER_HOST_MOUNT_VOLUME = process.env.CONTAINER_HOST_MOUNT_VOLUME || core.getInput('container_out_host_volume_path');
-console.log(LOGIN);
     const instance = got.extend({
         prefixUrl: URL,
         responseType: 'json'
@@ -36,6 +35,10 @@ console.log(LOGIN);
             }
         });
         console.log("4");
+       
+
+        //Create container
+        const CONTAINER_NAME = uuidv1()
         console.log({
             "Image":CONTAINER_IMAGE,
             "HostConfig":{
@@ -47,9 +50,6 @@ console.log(LOGIN);
             },
             "name":CONTAINER_NAME
             });
-
-        //Create container
-        const CONTAINER_NAME = uuidv1()
         const createContainerRequest = await jsonClient.post("endpoints/1/docker/containers/create?name="+CONTAINER_NAME, {json: {
             "Image":CONTAINER_IMAGE,
             "HostConfig":{
