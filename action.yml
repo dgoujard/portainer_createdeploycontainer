@@ -1,0 +1,22 @@
+name: 'Deploy alpine image with code source in Portainer'
+description: 'Deploy alpine image with code source in Portainer'
+inputs:
+  login:  # id of input
+    description: 'Portainer login'
+    required: true
+    default: 'admin'
+  password:  # id of input
+    description: 'Portainer password'
+    required: true
+  url:  # id of input
+    description: 'Portainer url'
+    required: true
+  container_image:  # id of input
+    description: 'Deploy container image'
+    required: true
+  container_out_host_volume_path:  # id of input
+    description: 'Container host volume out path'
+    required: true
+runs:
+  using: 'node12'
+  main: 'index.js'

@@ -8,6 +8,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "@actions/core": "^1.2.2",
     "got": "^10.3.0",
     "uuid": "^3.4.0"
   }
