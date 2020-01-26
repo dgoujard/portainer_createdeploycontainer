@@ -35,7 +35,7 @@ const core = require('@actions/core');
             }
         });
         console.log("4");
-       
+console.log(AUTH_TOKEN)
 
         //Create container
         const CONTAINER_NAME = uuidv1()
@@ -50,6 +50,7 @@ const core = require('@actions/core');
             },
             "name":CONTAINER_NAME
             });
+            console.log("endpoints/1/docker/containers/create?name="+CONTAINER_NAME)
         const createContainerRequest = await jsonClient.post("endpoints/1/docker/containers/create?name="+CONTAINER_NAME, {json: {
             "Image":CONTAINER_IMAGE,
             "HostConfig":{
