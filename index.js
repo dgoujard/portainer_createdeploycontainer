@@ -62,7 +62,7 @@ const core = require('@actions/core');
             "name":CONTAINER_NAME
             }}).json();
             console.log("5");
-
+console.log(createContainerRequest)
         if( createContainerRequest.Id == undefined)  
             throw new Error("Missing container ID in response")
             console.log("6");
