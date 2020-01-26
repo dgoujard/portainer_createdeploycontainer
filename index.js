@@ -32,7 +32,6 @@ const core = require('@actions/core');
             }
         });
         //pull image
-        
         const createImageRequest = await jsonClient.post("endpoints/1/docker/images/create?fromImage="+encodeURI(CONTAINER_IMAGE), {
             json: {"fromImage":CONTAINER_IMAGE},
             headers: {
