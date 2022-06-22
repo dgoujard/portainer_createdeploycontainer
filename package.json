@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.2",
-    "got": "^10.3.0",
+    "got": "^11.8.5",
     "uuid": "^3.4.0"
   }
 }
